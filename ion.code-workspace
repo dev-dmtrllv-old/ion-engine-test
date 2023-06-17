@@ -1,8 +1,8 @@
 {
 	"folders": [
 		{
-			"path": ".",
-			"name": "engine"
+			"name": "ion-engine",
+			"path": "."
 		}
 	],
 	"settings": {

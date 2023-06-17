@@ -10,7 +10,8 @@ namespace ion
 	concept IsStringLike = std::is_convertible_v<T, std::string_view>;
 
 	template<typename T>
-	concept IsLoggable = requires(T loggable) {
+	concept IsLoggable = requires(T loggable)
+	{
 		{
 			loggable.log()
 		} -> IsStringLike;
@@ -55,8 +56,7 @@ namespace ion
 		};
 
 		struct CtorTag
-		{
-		};
+		{};
 
 	public:
 		/**
@@ -139,7 +139,10 @@ namespace ion
 			std::ostringstream stream;
 			using List = int[];
 
-			(void)List{ 0, ((void)(stream << args << " "), 0)... };
+			(void)List
+			{
+				0, ((void)(stream << args << " "), 0)...
+			};
 
 			return stream.str();
 		}

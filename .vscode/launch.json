@@ -6,7 +6,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/out/build/x64-debug-windows/test_game.exe",
-            "cwd": "${workspaceFolder}/out/build/x64-debug-windows",
+            "cwd": "${workspaceFolder}",
             "args": [
                 "test",
                 "1",
@@ -21,7 +21,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/out/build/x64-debug-linux/test_game",
-            "cwd": "${workspaceFolder}/out/build/x64-debug-linux",
+            "cwd": "${workspaceFolder}",
             "args": [
                 "test",
                 "1",

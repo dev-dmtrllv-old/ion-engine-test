@@ -3,17 +3,16 @@
 
 namespace ion
 {
-	Core::Core(Game& game, Logger& logger):
+    Core::Core(const std::filesystem::path& cwd, Game& game, Logger& logger) :
+        cwd_(cwd),
         game_(game),
         logger_(logger)
     {
-
+        logger.info("Running from", cwd_);
     }
 
-	Core::~Core()
-    {
-
-    }
+    Core::~Core()
+    {}
 
     [[nodiscard]] int Core::run()
     {

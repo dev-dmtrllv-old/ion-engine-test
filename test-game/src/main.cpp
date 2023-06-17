@@ -1,12 +1,11 @@
 #include "pch.hpp"
 #include "ion.hpp"
+#include "TestGame.hpp"
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
+int __stdcall wWinMain([[maybe_unused]] HINSTANCE hInstance,
+					   [[maybe_unused]] HINSTANCE hPrevInstance,
+					   [[maybe_unused]] PWSTR pCmdLine,
+					   [[maybe_unused]] int nCmdShow)
 {
-    ion::Logger::scoped("D:\\src\\c++\\ion\\logs", [](ion::Logger& logger) 
-    {
-        logger.info("Test", 1, 2, 3);
-    });
-    
-    return 0;
+	return ion::Core::load<TestGame>();
 }

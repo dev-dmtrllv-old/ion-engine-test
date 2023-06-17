@@ -14,9 +14,9 @@ target_precompile_headers(ion PRIVATE "include/pch.hpp")
 
 
 # Test game config
-file(GLOB_RECURSE test_game_sources "test-game/src/*.cpp" "test-game/include/*.hpp")
+file(GLOB_RECURSE test_game_sources "test-game/src/*.cpp" "test-game/include/*.hpp" "include/*.hpp")
 list(REMOVE_ITEM ${test_game_sources} "test-game/include/pch.hpp")
-add_executable(test_game "test-game/src/main.cpp")
+add_executable(test_game WIN32 ${test_game_sources})
 target_include_directories(test_game PRIVATE "test-game/include" "include")
 target_precompile_headers(test_game PRIVATE "include/pch.hpp")
 target_link_libraries(test_game PRIVATE ion)

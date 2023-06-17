@@ -3,21 +3,9 @@
 		{
 			"path": ".",
 			"name": "engine"
-		},
-		{
-			"path": "./test-game",
-			"name": "test-game"
-		},
-		{
-			"path": "./logs",
-			"name": "logs"
 		}
 	],
 	"settings": {
-		"files.associations": {
-			"*.embeddedhtml": "html",
-			"mutex": "cpp"
-		},
 		"files.exclude": {
 			"**/.git": true,
 			"**/.svn": true,
@@ -25,14 +13,11 @@
 			"**/CVS": true,
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
-			"*.code-workspace": true,
 			"out": true,
 			"build": true,
-			"logs": true,
-			"test-game": true,
 			"dependencies": true,
-			".vscode": true,
-			".clang-format": true
+			".clang-format": true,
+			".code-workspace": true
 		}
 	}
 }

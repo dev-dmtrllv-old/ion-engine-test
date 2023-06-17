@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Windows",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/build/x64-debug-windows/test_game.exe",
+            "cwd": "${workspaceFolder}/out/build/x64-debug-windows",
+            "args": [
+                "test",
+                "1",
+                "2",
+                "3"
+            ],
+            "preLaunchTask": "build",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Linux",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/build/x64-debug-linux/test_game",
+            "cwd": "${workspaceFolder}/out/build/x64-debug-linux",
+            "args": [
+                "test",
+                "1",
+                "2",
+                "3"
+            ],
+            "preLaunchTask": "build",
+            "externalConsole": false
+        }
+    ]
+}

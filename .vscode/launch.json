@@ -20,6 +20,7 @@
             "name": "Debug Linux",
             "type": "cppdbg",
             "request": "launch",
+            "miDebuggerPath": "/usr/bin/gdb",
             "program": "${workspaceFolder}/out/build/x64-debug-linux/test_game",
             "cwd": "${workspaceFolder}",
             "args": [

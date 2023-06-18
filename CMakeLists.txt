@@ -2,13 +2,16 @@
 
 project(ion)
 
+set(OpenGL_GL_PREFERENCE LEGACY)
+find_package(OpenGL REQUIRED)
 
 # Ion static lib
 file(GLOB_RECURSE ion_sources "src/*.cpp" "include/*.hpp")
 list(REMOVE_ITEM ${ion_sources} "include/pch.hpp")
 add_library(ion ${ion_sources})
-target_include_directories(ion PRIVATE "include")
+target_include_directories(ion PRIVATE "include" ${OPENGL_INCLUDE_DIRS})
 target_precompile_headers(ion PRIVATE "include/pch.hpp")
+target_link_libraries(ion ${OPENGL_LIBRARIES})
 # End ion static lib
 
 
@@ -59,6 +62,7 @@ if(MSVC)
 	add_compile_options(/W4 /WX)
 else()
 	add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+	target_link_libraries(ion X11)
 endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

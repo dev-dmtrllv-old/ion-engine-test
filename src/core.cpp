@@ -20,11 +20,6 @@ namespace ion
 
 	Core::~Core()
 	{
-		logger_.info("Disposing subsystems...");
-
-		std::reverse(systemInitOrder_.begin(), systemInitOrder_.end());
-		for (auto& system : systemInitOrder_)
-			disposeSystem(system);
 	}
 
 	[[nodiscard]] int Core::run()
@@ -32,5 +27,18 @@ namespace ion
 		WindowManager& wm = getSystem<WindowManager>();
 		wm.startEventLoop();
 		return 0;
+	}
+
+	void Core::dispose()
+	{
+		logger_.info("Disposing subsystems...");
+
+		std::reverse(systemInitOrder_.begin(), systemInitOrder_.end());
+		
+		for (auto& system : systemInitOrder_)
+			disposeSystem(system);
+
+		systemInitOrder_.clear();
+		systems_.clear();
 	}
 } // namespace ion

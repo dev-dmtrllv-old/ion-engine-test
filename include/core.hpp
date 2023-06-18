@@ -40,14 +40,15 @@ namespace ion
 			const std::string logPath = (cwd / "logs").string();
 
 			Logger::scoped(logPath, [&](Logger& logger)
-				{
-					const char* gameClassName = typeid(T).name();
-					logger.info("Starting game class", gameClassName);
-					T game = T();
-					Core core(cwd, game, logger);
-					returnValue = core.run();
-					logger.info("Game exited with code", returnValue);
-				});
+			{
+				const char* gameClassName = typeid(T).name();
+				logger.info("Starting game class", gameClassName);
+				T game = T();
+				Core core(cwd, game, logger);
+				returnValue = core.run();
+				core.dispose();
+				logger.info("Game exited with code", returnValue);
+			});
 			return returnValue;
 		}
 
@@ -91,6 +92,8 @@ namespace ion
 				throw std::runtime_error(std::format("{} is not registered!", systemName));
 			return *static_cast<T*>((systems_.at(hash)));
 		}
+
+		void dispose();
 
 		public:
 			inline Logger& logger() { return logger_; }

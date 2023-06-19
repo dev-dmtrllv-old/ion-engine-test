@@ -1,11 +1,9 @@
 #pragma once
 
-#include "game.hpp"
-#include "logger.hpp"
+#include "Game.hpp"
+#include "Logger.hpp"
 #include "SubSystem.hpp"
 #include "hash.hpp"
-
-// #define CREATE_EVENT(__NAME__) __NAME__ = Hasher::hash(#__NAME__)
 
 namespace ion
 {

@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "logger.hpp"
+#include "Logger.hpp"
 
 namespace ion
 {

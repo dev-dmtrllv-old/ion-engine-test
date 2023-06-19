@@ -14,7 +14,7 @@ namespace ion
 		SUBSYSTEM_CTOR(WindowManager)
 
 	public:
-		virtual const char* name() override;
+		virtual const char* name() const override;
 		virtual void initialize() override;
 		virtual void dispose() override;
 

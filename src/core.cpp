@@ -1,7 +1,8 @@
 #include "pch.hpp"
-#include "core.hpp"
+#include "Core.hpp"
 #include "hash.hpp"
 #include "WindowManager.hpp"
+#include "ResourceManager.hpp"
 
 namespace ion
 {
@@ -12,6 +13,7 @@ namespace ion
 		eventHandlers_()
 	{
 		registerSystem<WindowManager>();
+		registerSystem<ResourceManager>();
 
 		logger_.info("Initializing subsystems...");
 

@@ -1,5 +1,5 @@
 ﻿#pragma once
 
-#include "logger.hpp"
-#include "core.hpp"
-#include "game.hpp"
+#include "Logger.hpp"
+#include "Core.hpp"
+#include "Game.hpp"

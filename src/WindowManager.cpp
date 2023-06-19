@@ -1,6 +1,6 @@
 #include "pch.hpp"
 #include "WindowManager.hpp"
-#include "core.hpp"
+#include "Core.hpp"
 
 namespace ion
 {
@@ -21,14 +21,14 @@ namespace ion
 		core.registerEventHandler(Hasher::hash("INITIALIZE"), onSystemInitialized, this);
 		core.registerEventHandler(Hasher::hash("DISPOSE"), onSystemDisposed, this);
 	}
-	
+
 	WindowManager::~WindowManager()
 	{
 		core.removeEventHandler(Hasher::hash("INITIALIZE"), onSystemInitialized);
 		core.removeEventHandler(Hasher::hash("DISPOSE"), onSystemDisposed);
 	}
 
-	const char* WindowManager::name() { return "WindowManager"; }
+	const char* WindowManager::name() const { return "WindowManager"; }
 
 #ifdef _WIN32
 	LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -42,7 +42,7 @@ namespace ion
 		wcx_.cbClsExtra = 0;
 		wcx_.cbSize = sizeof(WNDCLASSEX);
 		wcx_.cbWndExtra = 0;
-		wcx_.hbrBackground = CreateSolidBrush(RGB(200,0,0));
+		wcx_.hbrBackground = CreateSolidBrush(RGB(200, 0, 0));
 		wcx_.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wcx_.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 		wcx_.hIconSm = NULL;
@@ -55,7 +55,7 @@ namespace ion
 		RegisterClassEx(&wcx_);
 
 		hwnd_ = CreateWindowEx(0, CLASS_NAME, TEXT("Ion Game Window"), WS_OVERLAPPEDWINDOW, CW_DEFAULT, CW_DEFAULT, CW_DEFAULT, CW_DEFAULT, NULL, NULL, hInstance_, NULL);
-			
+
 		if (hwnd_ == NULL)
 			throw std::runtime_error("Could not create window!");
 
@@ -148,7 +148,7 @@ namespace ion
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hwnd, &ps);
 
-			FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(32,32,32)));
+			FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(32, 32, 32)));
 
 			EndPaint(hwnd, &ps);
 		}

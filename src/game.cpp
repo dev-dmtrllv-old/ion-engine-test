@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "game.hpp"
+#include "Game.hpp"
 
 namespace ion
 {

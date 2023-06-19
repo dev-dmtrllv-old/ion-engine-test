@@ -16,7 +16,7 @@ namespace ion
 	class SubSystemInterface
 	{
 	public:
-		virtual const char* name() = 0;
+		virtual const char* name() const = 0;
 
 	protected:
 		virtual void initialize() = 0;
@@ -24,20 +24,6 @@ namespace ion
 
 		friend class Core;
 	};
-
-	
-	// struct SubSystemEvent
-	// {
-	// 	SubSystemEvent(SubSystemInterface& subSystem):subSystem(subSystem) {}
-
-	// 	SubSystemInterface& subSystem;
-
-	// 	enum Events : std::size_t
-	// 	{
-	// 		INITIALIZE,
-	// 		DISPOSE
-	// 	};
-	// };
 
 	template<typename T>
 	class SubSystem : public SubSystemInterface
@@ -49,7 +35,7 @@ namespace ion
 		virtual ~SubSystem() {};
 
 	public:
-		virtual const char* name() override { return typeid(T).name(); };
+		virtual const char* name() const override { return typeid(T).name(); };
 	
 	protected:
 		void initialize() override { static_cast<T*>(this)->initialize(); }

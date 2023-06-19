@@ -65,7 +65,7 @@ namespace ion
 			const Hash hash = Hasher::hashType<T>();
 			if (systems_.contains(hash))
 				throw std::runtime_error(std::format("{} is already registered!", systemName));
-			logger_.debug("Registering {}", systemName);
+			logger_.debug("Registering", systemName);
 			T* system = new T(*this);
 			systems_.emplace(hash, system);
 			systemInitOrder_.emplace_back(system);

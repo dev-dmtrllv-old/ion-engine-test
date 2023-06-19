@@ -6,9 +6,38 @@ namespace ion
 {
 	const char* WindowManager::name() { return "WindowManager"; }
 
+	LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 	void WindowManager::initialize()
 	{
-#ifdef __unix__
+#ifdef _WIN32
+		hInstance_ = GetModuleHandle(NULL);
+
+		wcx_.cbClsExtra = 0;
+		wcx_.cbSize = sizeof(WNDCLASSEX);
+		wcx_.cbWndExtra = 0;
+		wcx_.hbrBackground = CreateSolidBrush(RGB(200,0,0));
+		wcx_.hCursor = LoadCursor(NULL, IDC_ARROW);
+		wcx_.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+		wcx_.hIconSm = NULL;
+		wcx_.hInstance = hInstance_;
+		wcx_.lpfnWndProc = wndProc;
+		wcx_.lpszClassName = CLASS_NAME;
+		wcx_.lpszMenuName = 0;
+		wcx_.style = CS_HREDRAW | CS_VREDRAW;
+
+		RegisterClassEx(&wcx_);
+
+		hwnd_ = CreateWindowEx(0, CLASS_NAME, TEXT("Ion Game Window"), WS_OVERLAPPEDWINDOW, CW_DEFAULT, CW_DEFAULT, CW_DEFAULT, CW_DEFAULT, NULL, NULL, hInstance_, NULL);
+			
+		if (hwnd_ == NULL)
+			throw std::runtime_error("Could not create window!");
+
+		ShowWindow(hwnd_, SW_NORMAL | SW_MAXIMIZE);
+		UpdateWindow(hwnd_);
+
+#elif defined(__unix__)
+
 		display = CHECK_NULL(XOpenDisplay(nullptr));
 
 		root = DefaultRootWindow(display);
@@ -36,7 +65,9 @@ namespace ion
 
 	void WindowManager::dispose()
 	{
-#ifdef __unix__
+#ifdef _WIN32
+
+#elif defined(__unix__)
 		XDestroyWindow(display, win);
 		XCloseDisplay(display);
 #endif
@@ -44,7 +75,14 @@ namespace ion
 
 	void WindowManager::startEventLoop()
 	{
-#ifdef __unix__
+#ifdef _WIN32
+		MSG msg = { };
+		while (GetMessage(&msg, NULL, 0, 0))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+#elif defined(__unix__)
 		XWindowAttributes gwa = { 0 };
 		XEvent e;
 
@@ -68,5 +106,28 @@ namespace ion
 
 		core.logger().debug("eventloop exit");
 #endif
+	}
+
+	LRESULT CALLBACK WindowManager::wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (uMsg)
+		{
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hwnd, &ps);
+
+			FillRect(hdc, &ps.rcPaint, CreateSolidBrush(RGB(32,32,32)));
+
+			EndPaint(hwnd, &ps);
+		}
+		return 0;
+
+		}
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 }

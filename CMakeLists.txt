@@ -58,7 +58,7 @@ endif()
 
 # GLOBAL CONFIGS
 if(MSVC)
-	add_definitions(-DUNICODE -D_UNICODE -D_CRT_SECURE_NO_WARNINGS -DNOGDI)
+	add_definitions(-DUNICODE -D_UNICODE -D_CRT_SECURE_NO_WARNINGS)
 	add_compile_options(/W4 /WX)
 else()
 	add_compile_options(-Wall -Wextra -Wpedantic -Werror)

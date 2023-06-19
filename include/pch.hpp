@@ -1,7 +1,8 @@
 #pragma once
 
 #ifdef _WIN32
-
+#define _WIN32_WINNT 0x0500 // build for Windows 2000 or higher
+#define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

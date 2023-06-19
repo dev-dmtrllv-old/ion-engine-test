@@ -4,6 +4,30 @@
 
 namespace ion
 {
+	void onSystemInitialized(const Event& e, void* data)
+	{
+		auto& wm = *static_cast<WindowManager*>(data);
+		wm.core.logger().info("A subsystem named", e.subSystem.name(), "initialized");
+	}
+
+	void onSystemDisposed(const Event& e, void* data)
+	{
+		auto& wm = *static_cast<WindowManager*>(data);
+		wm.core.logger().info("A subsystem named", e.subSystem.name(), "disposed");
+	}
+
+	WindowManager::WindowManager(Core& core) : SubSystem(core)
+	{
+		core.registerEventHandler(Hasher::hash("INITIALIZE"), onSystemInitialized, this);
+		core.registerEventHandler(Hasher::hash("DISPOSE"), onSystemDisposed, this);
+	}
+	
+	WindowManager::~WindowManager()
+	{
+		core.removeEventHandler(Hasher::hash("INITIALIZE"), onSystemInitialized);
+		core.removeEventHandler(Hasher::hash("DISPOSE"), onSystemDisposed);
+	}
+
 	const char* WindowManager::name() { return "WindowManager"; }
 
 	LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

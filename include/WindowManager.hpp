@@ -9,7 +9,7 @@ namespace ion
 	{
 	private:
 #ifdef _WIN32
-			static LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 #endif
 		SUBSYSTEM_CTOR(WindowManager)
 

@@ -5,8 +5,22 @@
 #include "SubSystem.hpp"
 #include "hash.hpp"
 
+// #define CREATE_EVENT(__NAME__) __NAME__ = Hasher::hash(#__NAME__)
+
 namespace ion
 {
+	struct Event
+	{
+		SubSystemInterface& subSystem;
+	};
+
+	using EventHandler = void(*)(const Event&, void* data);
+	struct EventHandlerData
+	{
+		EventHandler handler;
+		void* externalData;
+	};
+
 	class Core final
 	{
 	public:
@@ -40,15 +54,15 @@ namespace ion
 			const std::string logPath = (cwd / "logs").string();
 
 			Logger::scoped(logPath, [&](Logger& logger)
-			{
-				const char* gameClassName = typeid(T).name();
-				logger.info("Starting game class", gameClassName);
-				T game = T();
-				Core core(cwd, game, logger);
-				returnValue = core.run();
-				core.dispose();
-				logger.info("Game exited with code", returnValue);
-			});
+				{
+					const char* gameClassName = typeid(T).name();
+					logger.info("Starting game class", gameClassName);
+					T game = T();
+					Core core(cwd, game, logger);
+					returnValue = core.run();
+					core.dispose();
+					logger.info("Game exited with code", returnValue);
+				});
 			return returnValue;
 		}
 
@@ -75,12 +89,14 @@ namespace ion
 		{
 			logger_.info("Initializing", system->name());
 			system->initialize();
+			emitEvent(Hasher::hash("INITIALIZE"), Event { *system });
 		}
 
 		void disposeSystem(SubSystemInterface* system)
 		{
 			logger_.info("Disposing", system->name());
 			system->dispose();
+			emitEvent(Hasher::hash("DISPOSE"), Event { *system });
 		}
 
 		template<IsSubSystem T>
@@ -95,16 +111,20 @@ namespace ion
 
 		void dispose();
 
-		public:
-			inline Logger& logger() { return logger_; }
+		void emitEvent(const Hash eventType, const Event& event);
 
-		private:
+	public:
+		inline Logger& logger() { return logger_; }
+		void registerEventHandler(const Hash eventType, EventHandler handler, void* externalData);
+		void removeEventHandler(const Hash eventType, EventHandler handler);
 
+	private:
 		Game& game_;
 		Logger& logger_;
 		const std::filesystem::path& cwd_;
 
 		std::unordered_map<Hash, SubSystemInterface*> systems_;
 		std::vector<SubSystemInterface*> systemInitOrder_;
+		std::unordered_map<Hash, std::vector<EventHandlerData>> eventHandlers_;
 	};
 } // namespace ion

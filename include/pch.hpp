@@ -42,6 +42,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 constexpr struct
 {

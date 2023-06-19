@@ -3,10 +3,10 @@
 #include "pch.hpp"
 
 #define SUBSYSTEM_CTOR(__NAME__) private:\
-	__NAME__(Core& core) : SubSystem(core) {} \
+	__NAME__(Core& core); \
 	__NAME__(const __NAME__&) = delete; \
 	__NAME__(__NAME__&&) = delete; \
-	~__NAME__() {} \
+	~__NAME__(); \
 	friend class ion::Core;
 
 namespace ion
@@ -15,14 +15,29 @@ namespace ion
 
 	class SubSystemInterface
 	{
-	protected:
+	public:
 		virtual const char* name() = 0;
 
+	protected:
 		virtual void initialize() = 0;
 		virtual void dispose() = 0;
 
 		friend class Core;
 	};
+
+	
+	// struct SubSystemEvent
+	// {
+	// 	SubSystemEvent(SubSystemInterface& subSystem):subSystem(subSystem) {}
+
+	// 	SubSystemInterface& subSystem;
+
+	// 	enum Events : std::size_t
+	// 	{
+	// 		INITIALIZE,
+	// 		DISPOSE
+	// 	};
+	// };
 
 	template<typename T>
 	class SubSystem : public SubSystemInterface
@@ -35,10 +50,12 @@ namespace ion
 
 	public:
 		virtual const char* name() override { return typeid(T).name(); };
-
+	
+	protected:
 		void initialize() override { static_cast<T*>(this)->initialize(); }
 		void dispose() override { static_cast<T*>(this)->dispose(); }
-
+	
+	public:
 		Core& core;
 
 		friend class Core;

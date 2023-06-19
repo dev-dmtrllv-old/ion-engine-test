@@ -3,8 +3,8 @@
 
 namespace ion
 {
-    Game::~Game()
-    {
-        
-    }
+	Game::~Game()
+	{
+
+	}
 }

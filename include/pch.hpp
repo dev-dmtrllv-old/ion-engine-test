@@ -46,17 +46,17 @@
 constexpr struct
 {
 #ifdef NDEBUG
-    const bool isDebug = false;
-    const bool isRelease = true;
+	const bool isDebug = false;
+	const bool isRelease = true;
 #else
-    const bool isDebug = true;
-    const bool isRelease = false;
+	const bool isDebug = true;
+	const bool isRelease = false;
 #endif
 } env;
 
 #define CHECK_NULL(__STATEMENT__) [&]{ \
 auto returnValue = __STATEMENT__;  \
 if(returnValue == nullptr) \
-    throw std::runtime_error(std::format("{} is NULL!", #__STATEMENT__));\
+	throw std::runtime_error(std::format("{} is NULL!", #__STATEMENT__));\
 return returnValue; \
 }();

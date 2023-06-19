@@ -30,7 +30,9 @@ namespace ion
 
 	const char* WindowManager::name() { return "WindowManager"; }
 
+#ifdef _WIN32
 	LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+#endif
 
 	void WindowManager::initialize()
 	{
@@ -132,6 +134,7 @@ namespace ion
 #endif
 	}
 
+#ifdef _WIN32
 	LRESULT CALLBACK WindowManager::wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (uMsg)
@@ -154,4 +157,5 @@ namespace ion
 		}
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
+#endif
 }

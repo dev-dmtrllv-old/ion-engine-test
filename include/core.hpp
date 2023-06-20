@@ -22,12 +22,54 @@ namespace ion
 	class Core final
 	{
 	public:
-		Core(const std::filesystem::path& cwd, Logger& logger);
+		[[nodiscard]] static std::filesystem::path getCwd()
+		{
+			static bool isInitialized = false;
+			static std::filesystem::path cwd;
+
+			if (!isInitialized)
+			{
+				char path[MAX_PATH] = { '\0' };
+#ifdef _WIN32
+				GetCurrentDirectoryA(MAX_PATH, path);
+#else
+				if (getcwd(path, sizeof(path)) == NULL)
+					throw std::runtime_error("getcwd() failed!");
+#endif
+				cwd = path;
+				isInitialized = true;
+			}
+
+			return cwd;
+		}
+
+		template<typename T>
+		[[nodiscard]] static int load()
+		{
+			int returnValue = 0;
+
+			const std::filesystem::path cwd = getCwd();
+			const std::string logPath = (cwd / "logs").string();
+
+			Logger::scoped(logPath, [&](Logger& logger)
+				{
+					const char* gameClassName = typeid(T).name();
+					logger.info("Starting game class", gameClassName);
+					T game = T();
+					Core core(cwd, game, logger);
+					returnValue = core.run();
+					core.dispose();
+					logger.info("Game exited with code", returnValue);
+				});
+			return returnValue;
+		}
+
+	private:
+		Core(const std::filesystem::path& cwd, Game& game, Logger& logger);
 		~Core();
 
 		[[nodiscard]] int run();
 
-	private:
 		template<IsSubSystem T>
 		void registerSystem()
 		{
@@ -45,14 +87,14 @@ namespace ion
 		{
 			logger_.info("Initializing", system->name());
 			system->initialize();
-			emitEvent(Hasher::hash("INITIALIZED"), Event{ *system });
+			emitEvent(Hasher::hash("INITIALIZE"), Event { *system });
 		}
-		
+
 		void disposeSystem(SubSystemInterface* system)
 		{
 			logger_.info("Disposing", system->name());
 			system->dispose();
-			emitEvent(Hasher::hash("DISPOSED"), Event{ *system });
+			emitEvent(Hasher::hash("DISPOSE"), Event { *system });
 		}
 
 		template<IsSubSystem T>
@@ -65,7 +107,6 @@ namespace ion
 			return *static_cast<T*>((systems_.at(hash)));
 		}
 
-	public:
 		void dispose();
 
 		void emitEvent(const Hash eventType, const Event& event);
@@ -76,8 +117,9 @@ namespace ion
 		void removeEventHandler(const Hash eventType, EventHandler handler);
 
 	private:
-		const std::filesystem::path& cwd_;
+		Game& game_;
 		Logger& logger_;
+		const std::filesystem::path& cwd_;
 
 		std::unordered_map<Hash, SubSystemInterface*> systems_;
 		std::vector<SubSystemInterface*> systemInitOrder_;

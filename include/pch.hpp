@@ -6,10 +6,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#pragma comment(lib, "winmm.lib")
-#pragma comment(lib, "dbghelp.lib")
-#pragma comment(lib, "shlwapi.lib")
-
 #elif defined(linux) || defined(__unix__)
 
 #include <unistd.h>
@@ -28,7 +24,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <cassert>
 #include <filesystem>
 #include <iostream>
 #include <fstream>

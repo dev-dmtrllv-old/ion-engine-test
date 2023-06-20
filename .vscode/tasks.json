@@ -6,7 +6,7 @@
             "label": "build",
             "command": "build",
             "targets": [
-                "ion"
+                "test_game"
             ]
         }
     ]

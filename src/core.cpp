@@ -2,18 +2,17 @@
 #include "Core.hpp"
 #include "hash.hpp"
 #include "WindowManager.hpp"
-#include "ResourceManager.hpp"
+#include "js/ScriptManager.hpp"
 
 namespace ion
 {
-	Core::Core(const std::filesystem::path& cwd, Game& game, Logger& logger) :
+	Core::Core(const std::filesystem::path& cwd, Logger& logger) :
 		cwd_(cwd),
-		game_(game),
 		logger_(logger),
 		eventHandlers_()
 	{
+		registerSystem<js::ScriptManager>();
 		registerSystem<WindowManager>();
-		registerSystem<ResourceManager>();
 
 		logger_.info("Initializing subsystems...");
 

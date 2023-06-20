@@ -26,16 +26,25 @@ namespace ion
 	};
 
 	template<typename T>
+	concept IsSubSystem = std::is_base_of<SubSystemInterface, T>::value;
+
+	template<typename T>
 	class SubSystem : public SubSystemInterface
 	{
 	protected:
-		SubSystem(Core& core) : SubSystemInterface(), core(core) {}
+		SubSystem(Core& core) : SubSystemInterface(), core(core), hash_(typeid(T).hash_code()) {}
 		SubSystem(const SubSystem&) = delete;
 		SubSystem(SubSystem&&) = delete;
 		virtual ~SubSystem() {};
 
 	public:
 		virtual const char* name() const override { return typeid(T).name(); };
+		
+		template<typename T>
+		[[nodiscard]] bool is() const
+		{
+			return typeid(T).hash_code() == hash_;
+		}
 	
 	protected:
 		void initialize() override { static_cast<T*>(this)->initialize(); }
@@ -44,9 +53,9 @@ namespace ion
 	public:
 		Core& core;
 
+	private:
+		std::size_t hash_;
+
 		friend class Core;
 	};
-
-	template<typename T>
-	concept IsSubSystem = std::is_base_of<SubSystemInterface, T>::value;
 }

@@ -1,4 +1,10 @@
 {
+    "cmake.debugConfig": {
+        "args": [
+            "-first",
+            "-second"
+        ]
+    },
     "C_Cpp.formatting": "vcFormat",
     "editor.tabSize": 4,
     "editor.insertSpaces": false,

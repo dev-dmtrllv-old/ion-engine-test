@@ -5,7 +5,7 @@
             "name": "Debug Windows",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/build/x64-debug-windows/test_game.exe",
+            "program": "${workspaceFolder}/out/build/x64-debug-windows/ion.exe",
             "cwd": "${workspaceFolder}",
             "args": [
                 "test",
@@ -21,7 +21,7 @@
             "type": "cppdbg",
             "request": "launch",
             "miDebuggerPath": "/usr/bin/gdb",
-            "program": "${workspaceFolder}/out/build/x64-debug-linux/test_game",
+            "program": "${workspaceFolder}/out/build/x64-debug-linux/ion",
             "cwd": "${workspaceFolder}",
             "args": [
                 "test",

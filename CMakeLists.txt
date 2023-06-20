@@ -8,7 +8,7 @@ find_package(OpenGL REQUIRED)
 # Ion static lib
 file(GLOB_RECURSE ion_sources "src/*.cpp" "include/*.hpp")
 list(REMOVE_ITEM ${ion_sources} "include/pch.hpp")
-add_library(ion ${ion_sources})
+add_executable(ion WIN32 ${ion_sources})
 target_include_directories(ion PRIVATE "include" ${OPENGL_INCLUDE_DIRS})
 target_precompile_headers(ion PRIVATE "include/pch.hpp")
 target_link_libraries(ion ${OPENGL_LIBRARIES})
@@ -17,12 +17,12 @@ target_link_libraries(ion ${OPENGL_LIBRARIES})
 
 
 # Test game config
-file(GLOB_RECURSE test_game_sources "test-game/src/*.cpp" "test-game/include/*.hpp" "include/*.hpp")
-list(REMOVE_ITEM ${test_game_sources} "test-game/include/pch.hpp")
-add_executable(test_game WIN32 ${test_game_sources})
-target_include_directories(test_game PRIVATE "test-game/include" "include")
-target_precompile_headers(test_game PRIVATE "include/pch.hpp")
-target_link_libraries(test_game PRIVATE ion)
+# file(GLOB_RECURSE test_game_sources "test-game/src/*.cpp" "test-game/include/*.hpp" "include/*.hpp")
+# list(REMOVE_ITEM ${test_game_sources} "test-game/include/pch.hpp")
+# add_executable(test_game WIN32 ${test_game_sources})
+# target_include_directories(test_game PRIVATE "test-game/include" "include")
+# target_precompile_headers(test_game PRIVATE "include/pch.hpp")
+# target_link_libraries(test_game PRIVATE ion)
 # End test game config
 
 
@@ -67,6 +67,6 @@ endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
 	set_property(TARGET ion PROPERTY CXX_STANDARD 23)
-	set_property(TARGET test_game PROPERTY CXX_STANDARD 23)
+	# set_property(TARGET test_game PROPERTY CXX_STANDARD 23)
 endif()
 # END GLOBAL CONFIGS

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Game.hpp"
 #include "Logger.hpp"
 #include "SubSystem.hpp"
 #include "hash.hpp"
@@ -43,33 +42,13 @@ namespace ion
 			return cwd;
 		}
 
-		template<typename T>
-		[[nodiscard]] static int load()
-		{
-			int returnValue = 0;
-
-			const std::filesystem::path cwd = getCwd();
-			const std::string logPath = (cwd / "logs").string();
-
-			Logger::scoped(logPath, [&](Logger& logger)
-				{
-					const char* gameClassName = typeid(T).name();
-					logger.info("Starting game class", gameClassName);
-					T game = T();
-					Core core(cwd, game, logger);
-					returnValue = core.run();
-					core.dispose();
-					logger.info("Game exited with code", returnValue);
-				});
-			return returnValue;
-		}
-
-	private:
-		Core(const std::filesystem::path& cwd, Game& game, Logger& logger);
+		Core(Logger& logger);
 		~Core();
-
+	
 		[[nodiscard]] int run();
-
+		void dispose();
+	
+	private:
 		template<IsSubSystem T>
 		void registerSystem()
 		{
@@ -87,14 +66,14 @@ namespace ion
 		{
 			logger_.info("Initializing", system->name());
 			system->initialize();
-			emitEvent(Hasher::hash("INITIALIZE"), Event { *system });
+			emitEvent(Hasher::hash("INITIALIZE"), Event{ *system });
 		}
 
 		void disposeSystem(SubSystemInterface* system)
 		{
 			logger_.info("Disposing", system->name());
 			system->dispose();
-			emitEvent(Hasher::hash("DISPOSE"), Event { *system });
+			emitEvent(Hasher::hash("DISPOSE"), Event{ *system });
 		}
 
 		template<IsSubSystem T>
@@ -107,8 +86,6 @@ namespace ion
 			return *static_cast<T*>((systems_.at(hash)));
 		}
 
-		void dispose();
-
 		void emitEvent(const Hash eventType, const Event& event);
 
 	public:
@@ -117,9 +94,7 @@ namespace ion
 		void removeEventHandler(const Hash eventType, EventHandler handler);
 
 	private:
-		Game& game_;
 		Logger& logger_;
-		const std::filesystem::path& cwd_;
 
 		std::unordered_map<Hash, SubSystemInterface*> systems_;
 		std::vector<SubSystemInterface*> systemInitOrder_;

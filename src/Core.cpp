@@ -6,9 +6,7 @@
 
 namespace ion
 {
-	Core::Core(const std::filesystem::path& cwd, Game& game, Logger& logger) :
-		cwd_(cwd),
-		game_(game),
+	Core::Core(Logger& logger) :
 		logger_(logger),
 		eventHandlers_()
 	{

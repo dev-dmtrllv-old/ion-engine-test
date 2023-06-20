@@ -15,7 +15,7 @@
 			"**/Thumbs.db": true,
 			"out": true,
 			"build": true,
-			"dependencies": true,
+			// "dependencies": true,
 			".clang-format": true,
 			".code-workspace": true
 		},
